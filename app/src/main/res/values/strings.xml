@@ -10,6 +10,11 @@
     <string name="menu_editview">Edit</string>
     <string name="menu_delete">Delete</string>
     <string name="title_activity_main2">MainActivity</string>
+    <string name="done_by_deadline">done by deadline</string>
+    <string name="done_after_due">done after due</string>
+    <string name="past_due">past due</string>
+    <string name="to_be_done">to be done</string>
+    <string name="total_tasks">Total Tasks</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -26,4 +31,6 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+
 </resources>

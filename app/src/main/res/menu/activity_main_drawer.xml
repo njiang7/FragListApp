@@ -16,8 +16,8 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:icon="@drawable/leaderboard_24px"
+            android:title="Statistics" />
     </group>
 
 
