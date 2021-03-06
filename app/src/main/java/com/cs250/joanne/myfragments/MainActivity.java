@@ -1,5 +1,6 @@
 package com.cs250.joanne.myfragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -79,6 +80,11 @@ public class MainActivity extends AppCompatActivity
 //        if (id == R.id.action_settings) {
 //            return true;
 //        }
+
+        if (id == R.id.addtask) {
+            Intent intent = new Intent(this, AddTask.class);
+            startActivity(intent);
+        }
 
         return super.onOptionsItemSelected(item);
     }
