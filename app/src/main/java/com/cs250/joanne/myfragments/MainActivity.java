@@ -15,6 +15,8 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
+// HELLO
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
