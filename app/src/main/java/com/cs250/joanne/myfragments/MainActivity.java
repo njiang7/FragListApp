@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity
 
     private Fragment item;
     private Fragment list;
+    private Fragment statistics;
     private FragmentTransaction transaction;
     protected ItemAdapter aa;
     protected ArrayList<Item> myItems;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity
 
         item = new ItemFrag();
         list = new ListFrag();
+        statistics = new StatisticsFrag();
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, item).commit();
@@ -116,6 +118,16 @@ public class MainActivity extends AppCompatActivity
 // Replace whatever is in the fragment_container view with this fragment,
 // and add the transaction to the back stack so the user can navigate back
             transaction.replace(R.id.fragment_container, list);
+            transaction.addToBackStack(null);
+
+// Commit the transaction
+            transaction.commit();
+        } else if (id == R.id.statistics_frag) {
+            transaction = getSupportFragmentManager().beginTransaction();
+
+// Replace whatever is in the fragment_container view with this fragment,
+// and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, statistics);
             transaction.addToBackStack(null);
 
 // Commit the transaction
