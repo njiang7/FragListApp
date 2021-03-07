@@ -7,19 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cs250.joanne.myfragments.dummy.DummyContent.DummyItem;
+import com.cs250.joanne.myfragments.dummy.StatContent.StatItem;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
+ * {@link RecyclerView.Adapter} that can display a {@link StatItem}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<StatisticsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<StatItem> mValues;
 
-    public StatisticsRecyclerViewAdapter(List<DummyItem> items) {
+    public StatisticsRecyclerViewAdapter(List<StatItem> items) {
         mValues = items;
     }
 
@@ -46,12 +46,12 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public StatItem mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
+            mIdView = (TextView) view.findViewById(R.id.count);
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 

@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cs250.joanne.myfragments.dummy.DummyContent;
+import com.cs250.joanne.myfragments.dummy.StatContent;
 
 /**
  * A fragment representing a list of Items.
@@ -64,7 +64,7 @@ public class StatisticsFrag extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new StatisticsRecyclerViewAdapter(DummyContent.ITEMS));
+            recyclerView.setAdapter(new StatisticsRecyclerViewAdapter(StatContent.ITEMS));
         }
         return view;
     }
