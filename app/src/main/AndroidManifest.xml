@@ -9,7 +9,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Statistics"></activity>
-        <activity android:name=".AddTask" />
+        <activity
+            android:name=".AddTask">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"
+                />
+        </activity>
+
         <activity
             android:name=".navdraweractivity"
             android:label="@string/title_activity_navdraweractivity"
