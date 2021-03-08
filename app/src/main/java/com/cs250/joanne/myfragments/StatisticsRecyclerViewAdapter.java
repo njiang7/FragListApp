@@ -40,12 +40,53 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
     private int getNumDoneByDeadline() {
         int count = 0;
         for(Task task: mainActivity.myTasks) {
-            if(task.getDeadline() <= currentDay) {
+            if(task.getDeadline() <= currentDay && task.getCompleted()) {
                 count++;
             }
         }
 
         return count;
+    }
+
+    // Return the number of tasks completed after the deadline
+    private int getNumDoneAfterDue() {
+        int count = 0;
+        for(Task task: mainActivity.myTasks) {
+            if(task.getDeadline() > currentDay && task.getCompleted()) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    // Return the number of tasks past due
+    private int getNumPastDue() {
+        int count = 0;
+        for(Task task: mainActivity.myTasks) {
+            if(task.getDeadline() > currentDay && !task.getCompleted()) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    // Return the number of tasks past due
+    private int getNumToBeDone() {
+        int count = 0;
+        for(Task task: mainActivity.myTasks) {
+            if(task.getDeadline() <= currentDay && !task.getCompleted()) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    // Return the number of tasks past due
+    private int getTotalTasks() {
+        return mainActivity.myTasks.size();
     }
 
     @Override
@@ -60,6 +101,14 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
         holder.mItem = mValues.get(position);
         if(mValues.get(position).content.equals("done by deadline")) {
             holder.mIdView.setText("" + getNumDoneByDeadline());
+        } else if (mValues.get(position).content.equals("done after due")) {
+            holder.mIdView.setText("" + getNumDoneAfterDue());
+        } else if (mValues.get(position).content.equals("past due")) {
+            holder.mIdView.setText("" + getNumPastDue());
+        } else if (mValues.get(position).content.equals("to be done")) {
+            holder.mIdView.setText("" + getNumToBeDone());
+        } else if (mValues.get(position).content.equals("Total Tasks")) {
+            holder.mIdView.setText("" + getTotalTasks());
         } else {
             holder.mIdView.setText("0");
         }
