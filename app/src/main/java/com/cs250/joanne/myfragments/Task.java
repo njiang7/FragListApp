@@ -8,11 +8,13 @@ public class Task implements Comparable<Task> {
     private String name;
     private Integer deadline;
     private String category;
+    private Boolean completed;
 
     public Task(String name, Integer deadline, String category) {
         this.name = name;
         this.deadline = deadline;
         this.category = category;
+        this.completed = false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)

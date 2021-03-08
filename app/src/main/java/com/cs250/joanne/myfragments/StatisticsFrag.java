@@ -23,6 +23,8 @@ public class StatisticsFrag extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
+    private int currentDate;
+    private MainActivity mainActivity;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -48,6 +50,9 @@ public class StatisticsFrag extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+//        mainActivity.myTasks.size();
+
     }
 
     @Override

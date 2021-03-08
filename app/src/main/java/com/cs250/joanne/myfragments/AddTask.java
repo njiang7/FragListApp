@@ -18,7 +18,7 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
     private EditText selectDate;
     private int mYear, mMonth, mDay;
     private SharedPreferences prefs;
-    private String taskName, taskDueDate, taskCategory;
+//    private String taskName, taskDueDate, taskCategory;
 
 
 
@@ -29,10 +29,10 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
         selectDate = (EditText) findViewById(R.id.editTextDate);
         selectDate.setOnClickListener(this);
 
-        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        taskName = prefs.getString("taskName", "Task");
-        taskDueDate = prefs.getString("taskDueDate", "Date");
-        taskCategory = prefs.getString("taskCategory", "Category");
+//        prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        taskName = prefs.getString("taskName", "Task");
+//        taskDueDate = prefs.getString("taskDueDate", "Date");
+//        taskCategory = prefs.getString("taskCategory", "Category");
 
         // populate fields if editing a task instead of creating a new task
 //        EditText editTextName = (EditText) findViewById(R.id.editTextName);
@@ -74,7 +74,12 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
 
     public void onClickSave(View view) {
         // save input data and return to main activity
-        finish();
+        EditText editTextName = (EditText) findViewById(R.id.editTextName);
+        EditText editTextCategory = (EditText) findViewById(R.id.editTextCategory);
+        int date = mYear*10000 + (mMonth+1)*100 + mDay; // format date into an integer
+        Task myTask = new Task(editTextName.getText().toString(), date, editTextCategory.getText().toString());
+        MainActivity.myTasks.add(myTask);
 
+        finish();
     }
 }

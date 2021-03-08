@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity
     private Fragment statistics;
     private FragmentTransaction transaction;
     protected ItemAdapter aa;
-    protected ArrayList<Item> myItems;
+    protected TaskAdapter taskAdapter;
+    public static ArrayList<Item> myItems;
+    public static ArrayList<Task> myTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +36,14 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // create arraylist of tasks
+        myTasks = new ArrayList<>();
+
         // create ArrayList of items
         myItems = new ArrayList<Item>();
         // make array adapter to bind arraylist to listview with custom item layout
         aa = new ItemAdapter(this, R.layout.item_layout, myItems);
+        taskAdapter = new TaskAdapter(this, R.layout.item_layout, myTasks); // create taskAdapter
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
