@@ -1,7 +1,9 @@
 package com.cs250.joanne.myfragments;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -44,16 +46,31 @@ public class ListFrag extends Fragment {
         myact = (MainActivity) getActivity();
         myList = (ListView) myview.findViewById(R.id.mylist);
         // connect listview to the array adapter in MainActivity
-        myList.setAdapter(myact.aa);
+//        myList.setAdapter(myact.aa);
+
+        myList.setAdapter(myact.taskAdapter);
+
         registerForContextMenu(myList);
         // refresh view
-        myact.aa.notifyDataSetChanged();
+        myact.taskAdapter.notifyDataSetChanged();
 
         // program a short click on the list item
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Snackbar.make(view, "Selected #" + id, Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+                Task task = (Task) parent.getAdapter().getItem(position);
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Task Info")
+                        .setMessage("Due: " + task.getDeadline())
+                        .setPositiveButton("Mark Completed", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Mark task as completed
+//                                task.setCompleted(true);
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .setIcon(android.R.drawable.checkbox_on_background)
+                        .show();
             }
         });
 
@@ -99,6 +116,8 @@ public class ListFrag extends Fragment {
         }
         return false;
     }
+
+
 
 
     // Called at the start of the visible lifetime.

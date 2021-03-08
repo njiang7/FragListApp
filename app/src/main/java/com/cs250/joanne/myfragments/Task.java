@@ -34,4 +34,24 @@ public class Task implements Comparable<Task> {
     public String getCategory() {
         return category;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDeadline(Integer deadline) {
+        this.deadline = deadline;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public Boolean getCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
+    }
 }

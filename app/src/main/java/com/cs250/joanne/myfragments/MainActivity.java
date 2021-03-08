@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     protected TaskAdapter taskAdapter;
     public static ArrayList<Item> myItems;
     public static ArrayList<Task> myTasks;
+    public static ArrayList<Task> completedTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +39,13 @@ public class MainActivity extends AppCompatActivity
 
         // create arraylist of tasks
         myTasks = new ArrayList<>();
+        completedTasks = new ArrayList<>();
 
         // create ArrayList of items
         myItems = new ArrayList<Item>();
         // make array adapter to bind arraylist to listview with custom item layout
         aa = new ItemAdapter(this, R.layout.item_layout, myItems);
-        taskAdapter = new TaskAdapter(this, R.layout.item_layout, myTasks); // create taskAdapter
+        taskAdapter = new TaskAdapter(this, R.layout.item_task, myTasks); // create taskAdapter
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

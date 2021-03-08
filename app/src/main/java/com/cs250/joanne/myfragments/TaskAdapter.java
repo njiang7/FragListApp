@@ -39,6 +39,7 @@ public class TaskAdapter extends ArrayAdapter<Task> {
             itemView = (LinearLayout) convertView;
         }
 
+
         TextView nameView = (TextView) itemView.findViewById(R.id.taskName);
         TextView deadlineView = (TextView) itemView.findViewById(R.id.taskDeadline);
         TextView categoryView = (TextView) itemView.findViewById(R.id.taskCategory);
