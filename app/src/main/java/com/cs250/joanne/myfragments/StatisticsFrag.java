@@ -24,7 +24,7 @@ public class StatisticsFrag extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private int currentDate;
-    private MainActivity mainActivity;
+    MainActivity mainActivity;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -51,8 +51,7 @@ public class StatisticsFrag extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
 
-//        mainActivity.myTasks.size();
-
+        mainActivity = (MainActivity) getActivity();
     }
 
     @Override
@@ -69,7 +68,7 @@ public class StatisticsFrag extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new StatisticsRecyclerViewAdapter(StatContent.ITEMS));
+            recyclerView.setAdapter(new StatisticsRecyclerViewAdapter(StatContent.ITEMS, mainActivity));
         }
         return view;
     }

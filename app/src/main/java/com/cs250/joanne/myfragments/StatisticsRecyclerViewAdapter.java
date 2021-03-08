@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.cs250.joanne.myfragments.dummy.StatContent.StatItem;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -18,22 +19,50 @@ import java.util.List;
 public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<StatisticsRecyclerViewAdapter.ViewHolder> {
 
     private final List<StatItem> mValues;
+    private MainActivity mainActivity;
+    private Integer currentDay;
 
-    public StatisticsRecyclerViewAdapter(List<StatItem> items) {
+
+    public StatisticsRecyclerViewAdapter(List<StatItem> items, MainActivity mainActivity) {
         mValues = items;
+
+        Calendar calendar = Calendar.getInstance();
+        int mYear = calendar.get(Calendar.YEAR);
+        int mMonth = calendar.get(Calendar.MONTH);
+        int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+        currentDay = mYear*10000 + (mMonth+1)*100 + mDay; // format date into an integer
+        final Calendar c = Calendar.getInstance();
+
+        this.mainActivity = mainActivity;
+    }
+
+    // Return the number of tasks completed by the deadline.
+    private int getNumDoneByDeadline() {
+        int count = 0;
+        for(Task task: mainActivity.myTasks) {
+            if(task.getDeadline() <= currentDay) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_third, parent, false);
+                .inflate(R.layout.stat_layout, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
+        if(mValues.get(position).content.equals("done by deadline")) {
+            holder.mIdView.setText("" + getNumDoneByDeadline());
+        } else {
+            holder.mIdView.setText("0");
+        }
         holder.mContentView.setText(mValues.get(position).content);
     }
 
@@ -52,7 +81,7 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.count);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mContentView = (TextView) view.findViewById(R.id.stat_title);
         }
 
         @Override

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingLeft="25dp"
+    android:paddingTop="25dp"
+    android:paddingBottom="25dp">
+
+    <EditText
+        android:id="@+id/count"
+        android:layout_width="72dp"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:editable="false"
+        android:ems="10"
+        android:paddingRight="20dp"
+        android:textAlignment="center"
+        android:textColorHighlight="#020202"
+        android:textColorHint="#050505"
+        android:textColorLink="#FFFFFF"
+        android:textIsSelectable="false"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/stat_title"
+        android:layout_width="317dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:text="TextView"
+        android:textAlignment="viewStart"
+        android:textColor="#000000"
+        android:textSize="30sp" />
+</LinearLayout>

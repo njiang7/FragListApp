@@ -39,16 +39,16 @@ public class StatContent {
 
     private static StatItem createStatItem(int position) {
         if(position == 1) {
-            return new StatItem(String.valueOf(position), "done by deadline" + position, makeDetails(position));
+            return new StatItem(String.valueOf(position), "done by deadline", makeDetails(position));
         } else if (position == 2) {
-            return new StatItem(String.valueOf(position), "done after due" + position, makeDetails(position));
+            return new StatItem(String.valueOf(position), "done after due", makeDetails(position));
         } else if (position == 3) {
-            return new StatItem(String.valueOf(position), "past due" + position, makeDetails(position));
+            return new StatItem(String.valueOf(position), "past due", makeDetails(position));
         } else if (position == 4) {
-            return new StatItem(String.valueOf(position), "to be done" + position, makeDetails(position));
+            return new StatItem(String.valueOf(position), "to be done", makeDetails(position));
         }
 
-        return new StatItem(String.valueOf(position), "Total Tasks" + position, makeDetails(position));
+        return new StatItem(String.valueOf(position), "Total Tasks", makeDetails(position));
     }
 
     private static String makeDetails(int position) {

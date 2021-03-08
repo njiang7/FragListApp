@@ -11,4 +11,4 @@
     android:paddingTop="25dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".StatisticsFrag"
-    tools:listitem="@layout/fragment_third" />
+    tools:listitem="@layout/stat_layout" />
