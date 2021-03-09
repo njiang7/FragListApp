@@ -17,6 +17,14 @@ public class Task implements Comparable<Task> {
         this.completed = false;
     }
 
+    // copy constructor
+    public Task(Task task) {
+        this.name = task.name;
+        this.deadline = task.deadline;
+        this.category = task.category;
+        this.completed = task.completed;
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public int compareTo(Task task) {
         // return negative if task deadline is smaller (earlier) than the one being compared to

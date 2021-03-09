@@ -2,6 +2,8 @@ package com.cs250.joanne.myfragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
@@ -95,10 +97,19 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.addtask) {
             Intent intent = new Intent(this, AddTask.class);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == resultCode) {
+            taskAdapter.notifyDataSetChanged();
+        }
+
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

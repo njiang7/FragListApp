@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -57,7 +59,7 @@ public class ListFrag extends Fragment {
         // program a short click on the list item
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Task task = (Task) parent.getAdapter().getItem(position);
+                final Task task = (Task) parent.getAdapter().getItem(position);
                 new AlertDialog.Builder(getContext())
                         .setTitle("Task Info")
                         .setMessage("Due: " + task.getDeadline())
@@ -65,7 +67,10 @@ public class ListFrag extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Mark task as completed
-//                                task.setCompleted(true);
+                                task.setCompleted(true);
+                                myact.completedTasks.add(new Task(task));
+                                myact.myTasks.remove(task);
+                                myact.taskAdapter.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("Cancel", null)
@@ -101,16 +106,24 @@ public class ListFrag extends Fragment {
         switch (item.getItemId()) {
             case MENU_ITEM_EDITVIEW: {
 
+                // launch an intent to start a addtask activity
                 Toast.makeText(cntx, "edit request",
                         Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), AddTask.class);
+                intent.putExtra("taskIndex", index); // pass the index of the object in mytasks to activity
+                startActivityForResult(intent, 1); // use this to get a result to update taskadapter notifydatasetchanged
+//                startActivity(intent);
+
+
+
                 return false;
             }
             case MENU_ITEM_DELETE: {
-                myact.myItems.remove(index);
+                MainActivity.myTasks.remove(index);
                 Toast.makeText(cntx, "job " + index + " deleted",
                         Toast.LENGTH_SHORT).show();
                 // refresh view
-                myact.aa.notifyDataSetChanged();
+                myact.taskAdapter.notifyDataSetChanged();
                 return true;
             }
         }
@@ -118,7 +131,14 @@ public class ListFrag extends Fragment {
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == resultCode) {
+            myact.taskAdapter.notifyDataSetChanged();
+        }
 
+    }
 
     // Called at the start of the visible lifetime.
     @Override
