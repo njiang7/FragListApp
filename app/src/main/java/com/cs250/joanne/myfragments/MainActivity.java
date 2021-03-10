@@ -167,5 +167,11 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    // Set the tile of the toolbar.
+    public void setToolBarTitle(Toolbar toolbar, String title){
+        toolbar.setTitle(title);
+    }
+
+
 
 }

@@ -59,6 +59,7 @@ public class StatisticsFrag extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mainActivity.getSupportActionBar().setTitle("Statistics");
         View view = inflater.inflate(R.layout.statistics_frag, container, false);
 
         // Set the adapter
