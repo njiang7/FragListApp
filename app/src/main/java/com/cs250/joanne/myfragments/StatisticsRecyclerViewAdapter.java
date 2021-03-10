@@ -39,7 +39,7 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
     // Return the number of tasks completed by the deadline.
     private int getNumDoneByDeadline() {
         int count = 0;
-        for(Task task: mainActivity.myTasks) {
+        for(Task task: mainActivity.completedTasks) {
             if(task.getDeadline() <= currentDay && task.getCompleted()) {
                 count++;
             }
@@ -51,7 +51,7 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
     // Return the number of tasks completed after the deadline
     private int getNumDoneAfterDue() {
         int count = 0;
-        for(Task task: mainActivity.myTasks) {
+        for(Task task: mainActivity.completedTasks) {
             if(task.getDeadline() > currentDay && task.getCompleted()) {
                 count++;
             }
@@ -64,7 +64,7 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
     private int getNumPastDue() {
         int count = 0;
         for(Task task: mainActivity.myTasks) {
-            if(task.getDeadline() > currentDay && !task.getCompleted()) {
+            if(task.getDeadline() < currentDay && !task.getCompleted()) {
                 count++;
             }
         }
@@ -76,7 +76,7 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
     private int getNumToBeDone() {
         int count = 0;
         for(Task task: mainActivity.myTasks) {
-            if(task.getDeadline() <= currentDay && !task.getCompleted()) {
+            if(task.getDeadline() >= currentDay && !task.getCompleted()) {
                 count++;
             }
         }
@@ -86,7 +86,7 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
 
     // Return the number of tasks past due
     private int getTotalTasks() {
-        return mainActivity.myTasks.size();
+        return mainActivity.myTasks.size() + mainActivity.completedTasks.size();
     }
 
     @Override
