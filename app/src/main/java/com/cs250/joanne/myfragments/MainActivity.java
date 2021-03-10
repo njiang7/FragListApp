@@ -25,10 +25,10 @@ public class MainActivity extends AppCompatActivity
     private Fragment item;
     private Fragment list;
     private Fragment statistics;
+    private Fragment completedTasksFrag;
     private FragmentTransaction transaction;
-    protected ItemAdapter aa;
     protected TaskAdapter taskAdapter;
-    public static ArrayList<Item> myItems;
+    protected TaskAdapter completedTasksAdapter;
     public static ArrayList<Task> myTasks;
     public static ArrayList<Task> completedTasks;
 
@@ -43,11 +43,10 @@ public class MainActivity extends AppCompatActivity
         myTasks = new ArrayList<>();
         completedTasks = new ArrayList<>();
 
-        // create ArrayList of items
-        myItems = new ArrayList<Item>();
         // make array adapter to bind arraylist to listview with custom item layout
-        aa = new ItemAdapter(this, R.layout.item_layout, myItems);
         taskAdapter = new TaskAdapter(this, R.layout.item_task, myTasks); // create taskAdapter
+        completedTasksAdapter = new TaskAdapter(this, R.layout.item_task, completedTasks);
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -58,6 +57,7 @@ public class MainActivity extends AppCompatActivity
         item = new ItemFrag();
         list = new ListFrag();
         statistics = new StatisticsFrag();
+        completedTasksFrag = new CompletedTasksFrag();
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, item).commit();
@@ -150,6 +150,11 @@ public class MainActivity extends AppCompatActivity
             transaction.addToBackStack(null);
 
 // Commit the transaction
+            transaction.commit();
+        } else if (id == R.id.completedtasks_frag) {
+            transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, completedTasksFrag);
+            transaction.addToBackStack(null);
             transaction.commit();
         }
 

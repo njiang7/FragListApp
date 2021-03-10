@@ -34,7 +34,6 @@ public class ItemFrag extends Fragment {
             @Override
             public void onClick(View v) {
                 Item myitem = new Item(tv.getText().toString());
-                myact.myItems.add(myitem);
                 Toast.makeText(getActivity().getApplicationContext(), "added item", LENGTH_SHORT).show();
             }
         });

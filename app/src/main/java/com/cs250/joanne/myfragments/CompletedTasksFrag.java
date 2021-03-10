@@ -26,7 +26,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 
-public class ListFrag extends Fragment {
+public class CompletedTasksFrag extends Fragment {
 
     public static final int MENU_ITEM_EDITVIEW = Menu.FIRST;
     public static final int MENU_ITEM_DELETE = Menu.FIRST + 1;
@@ -49,13 +49,12 @@ public class ListFrag extends Fragment {
         myact = (MainActivity) getActivity();
         myList = (ListView) myview.findViewById(R.id.mylist);
         // connect listview to the array adapter in MainActivity
-//        myList.setAdapter(myact.aa);
 
-        myList.setAdapter(myact.taskAdapter);
+        myList.setAdapter(myact.completedTasksAdapter);
 
         registerForContextMenu(myList);
         // refresh view
-        myact.taskAdapter.notifyDataSetChanged();
+        myact.completedTasksAdapter.notifyDataSetChanged();
 
         // program a short click on the list item
         myList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -64,14 +63,14 @@ public class ListFrag extends Fragment {
                 new AlertDialog.Builder(getContext())
                         .setTitle("Task Info")
                         .setMessage("Due: " + task.getDeadline())
-                        .setPositiveButton("Mark Completed", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Mark Incomplete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                // Mark task as completed
-                                task.setCompleted(true);
-                                myact.completedTasks.add(new Task(task));
-                                myact.myTasks.remove(task);
-                                myact.taskAdapter.notifyDataSetChanged();
+                                // Mark task as incomplete
+                                task.setCompleted(false);
+                                myact.myTasks.add(new Task(task));
+                                myact.completedTasks.remove(task);
+                                myact.completedTasksAdapter.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("Cancel", null)
@@ -112,29 +111,26 @@ public class ListFrag extends Fragment {
                 Toast.makeText(cntx, "edit request",
                         Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), AddTask.class);
-                intent.putExtra("taskIndex", index); // pass the index of the object in mytasks to activity
-                intent.putExtra("whichArray", 0); // 0 for myTasks arraylist
+                intent.putExtra("taskIndex", index); // pass the index of the object to activity
+                intent.putExtra("whichArray", 1); // 1 for completedTasks arraylist
                 startActivityForResult(intent, 1); // use this to get a result to update taskadapter notifydatasetchanged
-//                startActivity(intent);
-
-
 
                 return false;
             }
             case MENU_ITEM_DELETE: {
-                MainActivity.myTasks.remove(index);
+                MainActivity.completedTasks.remove(index);
                 Toast.makeText(cntx, "job " + index + " deleted",
                         Toast.LENGTH_SHORT).show();
                 // refresh view
-                myact.taskAdapter.notifyDataSetChanged();
+                myact.completedTasksAdapter.notifyDataSetChanged();
                 return true;
             }
             case MENU_ITEM_COPY: {
                 Toast.makeText(cntx, "copy task",
                         Toast.LENGTH_SHORT).show();
-                Task task = MainActivity.myTasks.get(index);
-                MainActivity.myTasks.add(new Task(task));
-                myact.taskAdapter.notifyDataSetChanged();
+                Task task = MainActivity.completedTasks.get(index);
+                MainActivity.completedTasks.add(new Task(task));
+                myact.completedTasksAdapter.notifyDataSetChanged();
                 return true;
             }
         }
@@ -146,7 +142,7 @@ public class ListFrag extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == resultCode) {
-            myact.taskAdapter.notifyDataSetChanged();
+            myact.completedTasksAdapter.notifyDataSetChanged();
         }
 
     }

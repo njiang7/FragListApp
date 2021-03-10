@@ -20,6 +20,7 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
     private int mYear, mMonth, mDay;
     private SharedPreferences prefs;
     private int taskIndex = -1;
+    private int whichArray;
     private String taskName, taskDueDate, taskCategory;
     private Task task;
 
@@ -35,6 +36,7 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             taskIndex = extras.getInt("taskIndex", -1);
+            whichArray = extras.getInt("whichArray", 0);
 
 
         }
@@ -45,7 +47,11 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
 //        taskCategory = prefs.getString("taskCategory", "Category");
 
         if (taskIndex != -1) {
-            task = MainActivity.myTasks.get(taskIndex);
+            if (whichArray == 0) {
+                task = MainActivity.myTasks.get(taskIndex);
+            } else if (whichArray == 1) {
+                task = MainActivity.completedTasks.get(taskIndex);
+            }
 
             if (task != null) {
 
@@ -109,7 +115,11 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
             task.setCategory(editTextCategory.getText().toString());
         } else {
             Task myTask = new Task(editTextName.getText().toString(), date, editTextCategory.getText().toString());
-            MainActivity.myTasks.add(myTask);
+            if (whichArray == 0) {
+                MainActivity.myTasks.add(myTask);
+            } else if (whichArray == 1) {
+                MainActivity.completedTasks.add(myTask);
+            }
         }
 
         setResult(1);

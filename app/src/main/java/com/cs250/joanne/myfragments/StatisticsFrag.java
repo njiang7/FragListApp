@@ -69,6 +69,7 @@ public class StatisticsFrag extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             recyclerView.setAdapter(new StatisticsRecyclerViewAdapter(StatContent.ITEMS, mainActivity));
+//            recyclerView.getAdapter().notifyDataSetChanged();
         }
         return view;
     }
