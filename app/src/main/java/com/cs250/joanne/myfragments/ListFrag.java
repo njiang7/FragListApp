@@ -53,6 +53,7 @@ public class ListFrag extends Fragment {
 
         myList.setAdapter(myact.taskAdapter);
 
+        myact.getSupportActionBar().setTitle("Current Tasks");
         registerForContextMenu(myList);
         // refresh view
         myact.taskAdapter.notifyDataSetChanged();

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.cs250.joanne.myfragments.dummy.StatContent;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -16,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // HELLO
 
@@ -28,6 +31,9 @@ public class MainActivity extends AppCompatActivity
     private Fragment completedTasksFrag;
     private FragmentTransaction transaction;
     protected TaskAdapter taskAdapter;
+    protected StatisticsRecyclerViewAdapter statisticsAdapter;
+    public static List<StatContent.StatItem> statItems;
+    public static ArrayList<Item> myItems;
     protected TaskAdapter completedTasksAdapter;
     public static ArrayList<Task> myTasks;
     public static ArrayList<Task> completedTasks;
@@ -42,11 +48,13 @@ public class MainActivity extends AppCompatActivity
         // create arraylist of tasks
         myTasks = new ArrayList<>();
         completedTasks = new ArrayList<>();
+        statItems = StatContent.ITEMS;
 
         // make array adapter to bind arraylist to listview with custom item layout
         taskAdapter = new TaskAdapter(this, R.layout.item_task, myTasks); // create taskAdapter
         completedTasksAdapter = new TaskAdapter(this, R.layout.item_task, completedTasks);
 
+        statisticsAdapter = new StatisticsRecyclerViewAdapter(statItems, this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -108,6 +116,7 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == resultCode) {
             taskAdapter.notifyDataSetChanged();
+            statisticsAdapter.notifyDataSetChanged();
         }
 
     }
@@ -161,6 +170,12 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    // Set the tile of the toolbar.
+    public void setToolBarTitle(Toolbar toolbar, String title){
+        toolbar.setTitle(title);
     }
 
 
