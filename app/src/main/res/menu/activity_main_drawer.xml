@@ -4,30 +4,16 @@
     <item android:title="Fragments">
         <menu>
             <item
-                android:id="@+id/item_frag"
-                android:icon="@drawable/ic_menu_camera"
-                android:title="Add Item" />
-            <item
                 android:id="@+id/list_frag"
-                android:title="Item List" />
-            <item
-                android:id="@+id/statistics_frag"
-                android:icon="@drawable/leaderboard_24px"
-                android:title="Statistics" />
+                android:title="TODO" />
             <item
                 android:id="@+id/completedtasks_frag"
                 android:icon="@drawable/ic_menu_gallery"
-                android:title="Completed Tasks" />
+                android:title="DONE" />
+            <item
+                android:id="@+id/statistics_frag"
+                android:icon="@drawable/leaderboard_24px"
+                android:title="STATS" />
         </menu>
     </item>
-
-   <group android:checkableBehavior="none">
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/leaderboard_24px"
-            android:title="Tools" />
-    </group>
-
-
-
 </menu>

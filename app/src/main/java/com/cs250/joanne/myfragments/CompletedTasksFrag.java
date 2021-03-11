@@ -44,9 +44,11 @@ public class CompletedTasksFrag extends Fragment {
         // Inflate the layout for this fragment
         View myview = inflater.inflate(R.layout.list_frag, container, false);
 
+
         cntx = getActivity().getApplicationContext();
 
         myact = (MainActivity) getActivity();
+        myact.getSupportActionBar().setTitle("Completed Tasks");
         myList = (ListView) myview.findViewById(R.id.mylist);
         // connect listview to the array adapter in MainActivity
 
