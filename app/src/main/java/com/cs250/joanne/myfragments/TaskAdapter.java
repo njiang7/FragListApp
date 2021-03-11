@@ -44,8 +44,13 @@ public class TaskAdapter extends ArrayAdapter<Task> {
         TextView deadlineView = (TextView) itemView.findViewById(R.id.taskDeadline);
         TextView categoryView = (TextView) itemView.findViewById(R.id.taskCategory);
 
+        String date = task.getDeadline().toString();
+        int year = Integer.parseInt(date.substring(0,4));
+        int month = Integer.parseInt(date.substring(4,6)) - 1;
+        int day = Integer.parseInt(date.substring(6,8));
+        String dateformat = month + "/" + day + "/" + year;
         nameView.setText(task.getName());
-        deadlineView.setText(task.getDeadline().toString());
+        deadlineView.setText(dateformat);
         categoryView.setText(task.getCategory());
 
         return itemView;

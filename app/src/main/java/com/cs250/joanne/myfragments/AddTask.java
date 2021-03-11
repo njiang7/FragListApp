@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -29,6 +30,8 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false); // disable back toolbar button
+        getSupportActionBar().setTitle("Add Task");
         setContentView(R.layout.activity_add_task);
         selectDate = (EditText) findViewById(R.id.editTextDate);
         selectDate.setOnClickListener(this);
@@ -92,6 +95,7 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
                             mYear = year;
                             mMonth = monthOfYear;
                             mDay = dayOfMonth;
+                            selectDate.setError(null); // clear error message
                         }
                     }, mYear, mMonth, mDay);
             datePickerDialog.show();
@@ -108,6 +112,26 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
         // save input data and return to main activity
         EditText editTextName = (EditText) findViewById(R.id.editTextName);
         EditText editTextCategory = (EditText) findViewById(R.id.editTextCategory);
+
+        // make sure edittext are not empty
+        int errorFlag = 0;
+        if (TextUtils.isEmpty(editTextName.getText().toString())) {
+            editTextName.setError("Task name cannot be empty.");
+            errorFlag = 1;
+        }
+        if (TextUtils.isEmpty(editTextCategory.getText().toString())) {
+            editTextCategory.setError("Task category cannot be empty.");
+            errorFlag = 1;
+        }
+        if (TextUtils.isEmpty(selectDate.getText().toString())) {
+            selectDate.setError("Deadline cannot be empty.");
+            errorFlag = 1;
+        }
+
+        if (errorFlag == 1) {
+            return;
+        }
+
         int date = mYear * 10000 + (mMonth + 1) * 100 + mDay; // format date into an integer
         if (task != null) { // if you are editing an existing task
             task.setName(editTextName.getText().toString());
