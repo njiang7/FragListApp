@@ -25,7 +25,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Fragment item;
     private Fragment list;
     private Fragment statistics;
     private Fragment completedTasksFrag;
@@ -33,7 +32,6 @@ public class MainActivity extends AppCompatActivity
     protected TaskAdapter taskAdapter;
     protected StatisticsRecyclerViewAdapter statisticsAdapter;
     public static List<StatContent.StatItem> statItems;
-    public static ArrayList<Item> myItems;
     protected TaskAdapter completedTasksAdapter;
     public static ArrayList<Task> myTasks;
     public static ArrayList<Task> completedTasks;
@@ -62,13 +60,12 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        item = new ItemFrag();
         list = new ListFrag();
         statistics = new StatisticsFrag();
         completedTasksFrag = new CompletedTasksFrag();
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, item).commit();
+                .add(R.id.fragment_container, list).commit();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
