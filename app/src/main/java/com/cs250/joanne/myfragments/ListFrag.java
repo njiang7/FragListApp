@@ -60,7 +60,7 @@ public class ListFrag extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Task task = (Task) parent.getAdapter().getItem(position);
                 new AlertDialog.Builder(getContext())
-                        .setTitle("Task Info")
+                        .setTitle(task.getName())
                         .setMessage("Due: " + task.formateDeadline())
                         .setPositiveButton("Mark Completed", new DialogInterface.OnClickListener() {
                             @Override
@@ -79,7 +79,7 @@ public class ListFrag extends Fragment {
                             }
                         })
                         .setNegativeButton("Cancel", null)
-                        .setIcon(android.R.drawable.checkbox_on_background)
+//                        .setIcon(android.R.drawable.checkbox_on_background)
                         .show();
             }
         });

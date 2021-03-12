@@ -63,10 +63,10 @@ public class CompletedTasksFrag extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Task task = (Task) parent.getAdapter().getItem(position);
                 new AlertDialog.Builder(getContext())
-                        .setTitle("Task Info")
+                        .setTitle(task.getName())
                         .setMessage("Due: " + task.formateDeadline() + "\nDone: " + task.formatDateCompleted())
                         .setPositiveButton("OK", null)
-                        .setIcon(android.R.drawable.checkbox_on_background)
+//                        .setIcon(android.R.drawable.checkbox_on_background)
                         .show();
             }
         });
