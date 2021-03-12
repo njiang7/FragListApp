@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddTask">
+    tools:context=".TaskUpdate">
 
     <EditText
         android:id="@+id/editTextName"
@@ -30,7 +30,7 @@
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:focusable="false"
-        android:hint="DD/MM/YYYY"
+        android:hint="MM/DD/YYYY"
         android:inputType="date"
         android:longClickable="false"
         app:layout_constraintEnd_toEndOf="parent"

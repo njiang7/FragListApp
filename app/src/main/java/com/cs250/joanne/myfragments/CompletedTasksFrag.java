@@ -3,9 +3,7 @@ package com.cs250.joanne.myfragments;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -21,9 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class CompletedTasksFrag extends Fragment {
@@ -48,6 +44,7 @@ public class CompletedTasksFrag extends Fragment {
         cntx = getActivity().getApplicationContext();
 
         myact = (MainActivity) getActivity();
+
         myact.getSupportActionBar().setTitle("Completed Tasks");
         myList = (ListView) myview.findViewById(R.id.mylist);
         // connect listview to the array adapter in MainActivity
@@ -102,7 +99,7 @@ public class CompletedTasksFrag extends Fragment {
                 // launch an intent to start a addtask activity
                 Toast.makeText(cntx, "edit request",
                         Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), AddTask.class);
+                Intent intent = new Intent(getActivity(), TaskUpdate.class);
                 intent.putExtra("taskIndex", index); // pass the index of the object to activity
                 intent.putExtra("whichArray", 1); // 1 for completedTasks arraylist
                 startActivityForResult(intent, 1); // use this to get a result to update taskadapter notifydatasetchanged
@@ -111,6 +108,7 @@ public class CompletedTasksFrag extends Fragment {
             }
             case MENU_ITEM_DELETE: {
                 MainActivity.completedTasks.remove(index);
+                Collections.sort(myact.completedTasks);
                 Toast.makeText(cntx, "job " + index + " deleted",
                         Toast.LENGTH_SHORT).show();
                 // refresh view
@@ -122,7 +120,8 @@ public class CompletedTasksFrag extends Fragment {
                         Toast.LENGTH_SHORT).show();
                 Task taskCopy = new Task(MainActivity.completedTasks.get(index));
                 taskCopy.setName(taskCopy.getName() + " (Copy)");
-                MainActivity.completedTasks.add(new Task(taskCopy));
+                MainActivity.completedTasks.add(new Task(taskCopy));;
+                Collections.sort(myact.completedTasks);
                 myact.completedTasksAdapter.notifyDataSetChanged();
                 return true;
             }
@@ -144,6 +143,7 @@ public class CompletedTasksFrag extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
+        Collections.sort(myact.completedTasks);
         Log.d ("Other Fragment2", "onStart");
         // Apply any required UI change now that the Fragment is visible.
     }

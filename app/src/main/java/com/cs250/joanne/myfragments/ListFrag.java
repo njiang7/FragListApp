@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -21,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import java.util.Calendar;
+import java.util.Collections;
 
 
 public class ListFrag extends Fragment {
@@ -44,6 +44,11 @@ public class ListFrag extends Fragment {
         cntx = getActivity().getApplicationContext();
 
         myact = (MainActivity) getActivity();
+
+        // Sort in chronological order
+        Collections.sort(myact.myTasks);
+        Collections.sort(myact.completedTasks);
+
         myList = (ListView) myview.findViewById(R.id.mylist);
         // connect listview to the array adapter in MainActivity
 //        myList.setAdapter(myact.aa);
@@ -115,7 +120,7 @@ public class ListFrag extends Fragment {
                 // launch an intent to start a addtask activity
                 Toast.makeText(cntx, "edit request",
                         Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getActivity(), AddTask.class);
+                Intent intent = new Intent(getActivity(), TaskUpdate.class);
                 intent.putExtra("taskIndex", index); // pass the index of the object in mytasks to activity
                 intent.putExtra("whichArray", 0); // 0 for myTasks arraylist
                 startActivityForResult(intent, 1); // use this to get a result to update taskadapter notifydatasetchanged
@@ -127,6 +132,7 @@ public class ListFrag extends Fragment {
             }
             case MENU_ITEM_DELETE: {
                 myact.myTasks.remove(index);
+                Collections.sort(myact.myTasks);
                 Toast.makeText(cntx, "job " + index + " deleted",
                         Toast.LENGTH_SHORT).show();
                 // refresh view
@@ -140,6 +146,7 @@ public class ListFrag extends Fragment {
                 Task taskCopy = new Task(MainActivity.myTasks.get(index));
                 taskCopy.setName(taskCopy.getName() + " (Copy)");
                 MainActivity.myTasks.add(taskCopy);
+                Collections.sort(myact.myTasks);
                 myact.taskAdapter.notifyDataSetChanged();
                 myact.statisticsAdapter.notifyDataSetChanged();
                 return true;
@@ -163,6 +170,7 @@ public class ListFrag extends Fragment {
     @Override
     public void onStart(){
         super.onStart();
+        Collections.sort(myact.myTasks);
         Log.d ("Other Fragment2", "onStart");
         // Apply any required UI change now that the Fragment is visible.
     }

@@ -1,8 +1,6 @@
 package com.cs250.joanne.myfragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -17,11 +15,9 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,7 +119,7 @@ public class MainActivity extends AppCompatActivity
 //        }
 
         if (id == R.id.addtask) {
-            Intent intent = new Intent(this, AddTask.class);
+            Intent intent = new Intent(this, TaskUpdate.class);
             startActivityForResult(intent, 1);
         }
 

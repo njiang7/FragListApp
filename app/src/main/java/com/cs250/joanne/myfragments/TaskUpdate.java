@@ -5,17 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 
-public class AddTask extends AppCompatActivity implements View.OnClickListener {
+public class TaskUpdate extends AppCompatActivity implements View.OnClickListener {
 
     private EditText selectDate;
     private int mYear, mMonth, mDay;
@@ -31,8 +30,8 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false); // disable back toolbar button
-        getSupportActionBar().setTitle("Add Task");
-        setContentView(R.layout.activity_add_task);
+        getSupportActionBar().setTitle("Task Update");
+        setContentView(R.layout.activity_task_update);
         selectDate = (EditText) findViewById(R.id.editTextDate);
         selectDate.setOnClickListener(this);
 
@@ -145,6 +144,10 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
                 MainActivity.completedTasks.add(myTask);
             }
         }
+
+        // sort chronologically
+        //Collections.sort(MainActivity.myTasks);
+        //Collections.sort(MainActivity.completedTasks);
 
         setResult(1);
         finish();
