@@ -131,6 +131,7 @@ public class ListFrag extends Fragment {
                         Toast.LENGTH_SHORT).show();
                 // refresh view
                 myact.taskAdapter.notifyDataSetChanged();
+                myact.statisticsAdapter.notifyDataSetChanged();
                 return true;
             }
             case MENU_ITEM_COPY: {
@@ -140,6 +141,7 @@ public class ListFrag extends Fragment {
                 taskCopy.setName(taskCopy.getName() + " (Copy)");
                 MainActivity.myTasks.add(taskCopy);
                 myact.taskAdapter.notifyDataSetChanged();
+                myact.statisticsAdapter.notifyDataSetChanged();
                 return true;
             }
         }
