@@ -31,6 +31,8 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
     public static Integer numPastDue = 0;
     public static Integer numToBeDone = 0;
     public static Integer totalTasks = 0;
+    private boolean isDoneAfterDue = false;
+    private boolean isDoneByDeadline = false;
 
 
     public StatisticsRecyclerViewAdapter(List<StatItem> items, Integer numTotalTasks, StatisticsFrag statisticsFrag, MainActivity mainActivity) {
@@ -62,6 +64,9 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
             statisticsFrag.numDoneByDeadline += count - numDoneByDeadline;
             numDoneByDeadline = count;
         }
+        else if(numDoneByDeadline > count) {
+            isDoneByDeadline = true;
+        }
 
         SharedPreferences.Editor peditor = myPrefs.edit();
         peditor.putInt("DONE_BY_DEADLINE_KEY", statisticsFrag.numDoneByDeadline);
@@ -80,6 +85,8 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
         if(numDoneAfterDue < count) {
             statisticsFrag.numDoneAfterDue += count - numDoneAfterDue;
             numDoneAfterDue = count;
+        } else if(numDoneAfterDue > count) {
+            isDoneAfterDue = true;
         }
 
         SharedPreferences.Editor peditor = myPrefs.edit();
@@ -133,15 +140,27 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
 
     // Return the number of tasks past due
     private void setTotalTasks() {
-        int total = numDoneAfterDue + numDoneByDeadline + numPastDue + numToBeDone;
+        if(isDoneByDeadline) {
+            isDoneByDeadline = false;
+            numDoneByDeadline = 0;
+        }
+        if(isDoneAfterDue) {
+            isDoneAfterDue = false;
+            numDoneAfterDue = 0;
+        }
 
-        if(totalTasks < total) {
+       /* if(totalTasks < total) {
             statisticsFrag.totalTasks += total - totalTasks;
             totalTasks = total;
         } else if (totalTasks > total) {
             statisticsFrag.totalTasks -= totalTasks - total;
             totalTasks = total;
-        }
+        }*/
+
+        statisticsFrag.totalTasks = statisticsFrag.numDoneAfterDue
+                + statisticsFrag.numDoneByDeadline
+                + statisticsFrag.numPastDue
+                + statisticsFrag.numToBeDone;
 
         SharedPreferences.Editor peditor = myPrefs.edit();
         peditor.putInt("TOTAL_TASKS_KEY", statisticsFrag.totalTasks);

@@ -74,7 +74,7 @@ public class StatisticsFrag extends Fragment {
         numToBeDone = myPrefs.getInt("TO_BE_DONE_KEY", 0);
         totalTasks = myPrefs.getInt("TOTAL_TASKS_KEY", 0);
 
-        /*SharedPreferences.Editor preferencesEditor = myPrefs.edit();
+       /* SharedPreferences.Editor preferencesEditor = myPrefs.edit();
         preferencesEditor.clear();
         preferencesEditor.apply();*/
 
