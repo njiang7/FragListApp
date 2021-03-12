@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     protected TaskAdapter completedTasksAdapter;
     public static ArrayList<Task> myTasks;
     public static ArrayList<Task> completedTasks;
-    private SharedPreferences myPrefs;
+    //private SharedPreferences myPrefs;
     private Integer numDoneByDeadline;
     private Integer numDoneAfterDue;
     private Integer numPastDue;
@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Context context = getApplicationContext(); // app level storage
-        myPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        //Context context = getApplicationContext(); // app level storage
+        //myPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,6 +79,12 @@ public class MainActivity extends AppCompatActivity
         completedTasksFrag = new CompletedTasksFrag();
 
         statisticsAdapter = new StatisticsRecyclerViewAdapter(statItems, 0, (StatisticsFrag) statistics,this);
+
+        /*numDoneByDeadline = myPrefs.getInt("DONE_BY_DEADLINE_KEY", 0);
+        numDoneAfterDue = myPrefs.getInt("DONE_AFTER_DUE_KEY", 0);
+        numPastDue = myPrefs.getInt("PAST_DUE_KEY", 0);
+        numToBeDone = myPrefs.getInt("TO_BE_DONE_KEY", 0);
+        totalTasks = myPrefs.getInt("TOTAL_TASKS_KEY", 0);*/
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, list).commit();
@@ -136,50 +142,53 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onStart() {
+        Log.d ("Main", "onStart");
         super.onStart();
 
-        numDoneByDeadline = myPrefs.getInt("DONE_BY_DEADLINE_KEY", 0);
+        /*numDoneByDeadline = myPrefs.getInt("DONE_BY_DEADLINE_KEY", 0);
         numDoneAfterDue = myPrefs.getInt("DONE_AFTER_DUE_KEY", 0);
         numPastDue = myPrefs.getInt("PAST_DUE_KEY", 0);
         numToBeDone = myPrefs.getInt("TO_BE_DONE_KEY", 0);
-        totalTasks = myPrefs.getInt("TOTAL_TASKS_KEY", 0);
+        totalTasks = myPrefs.getInt("TOTAL_TASKS_KEY", 0);*/
     }
 
     @Override
     protected void onResume() {
+        Log.d ("Main", "onResume");
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-
-        SharedPreferences.Editor peditor = myPrefs.edit();
+        Log.d ("Main", "onPause");
+        /*SharedPreferences.Editor peditor = myPrefs.edit();
         peditor.putInt("DONE_BY_DEADLINE_KEY", numDoneByDeadline);
         peditor.putInt("DONE_AFTER_DUE_KEY", numDoneAfterDue);
         peditor.putInt("PAST_DUE_KEY", numPastDue);
         peditor.putInt("TO_BE_DONE_KEY", numToBeDone);
         peditor.putInt("TOTAL_TASKS_KEY", totalTasks);
-        peditor.apply();
+        peditor.apply();*/
 
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-
-        SharedPreferences.Editor peditor = myPrefs.edit();
+        Log.d ("Main", "onStop");
+        /*SharedPreferences.Editor peditor = myPrefs.edit();
         peditor.putInt("DONE_BY_DEADLINE_KEY", numDoneByDeadline);
         peditor.putInt("DONE_AFTER_DUE_KEY", numDoneAfterDue);
         peditor.putInt("PAST_DUE_KEY", numPastDue);
         peditor.putInt("TO_BE_DONE_KEY", numToBeDone);
         peditor.putInt("TOTAL_TASKS_KEY", totalTasks);
-        peditor.apply();
+        peditor.apply();*/
 
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
+        Log.d ("Main", "onDestroy");
         // do stuff here
         Log.d("onDestroy", "exit 3");
         super.onDestroy();

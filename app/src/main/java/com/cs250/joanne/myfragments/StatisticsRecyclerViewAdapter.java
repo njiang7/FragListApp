@@ -43,39 +43,48 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
         currentDay = mYear * 10000 + (mMonth + 1) * 100 + mDay; // format date into an integer
         final Calendar c = Calendar.getInstance();
 
-        statisticsFrag = this.statisticsFrag;
+        this.statisticsFrag = statisticsFrag;
 
         this.mainActivity = mainActivity;
+        myPrefs = PreferenceManager.getDefaultSharedPreferences(mainActivity);
     }
 
     // Return the number of tasks completed by the deadline.
     private void setNumDoneByDeadline() {
         int count = 0;
         for (Task task : mainActivity.completedTasks) {
-            if (task.getDeadline() <= currentDay && task.getCompleted()) {
+            if (task.getDeadline() >= currentDay && task.getCompleted()) {
                 count++;
             }
         }
 
-        if(numDoneByDeadline != count) {
-            statisticsFrag.numDoneByDeadline += count;
+        if(numDoneByDeadline < count) {
+            statisticsFrag.numDoneByDeadline += count - numDoneByDeadline;
             numDoneByDeadline = count;
         }
+
+        SharedPreferences.Editor peditor = myPrefs.edit();
+        peditor.putInt("DONE_BY_DEADLINE_KEY", statisticsFrag.numDoneByDeadline);
+        peditor.apply();
     }
 
     // Return the number of tasks completed after the deadline
     private void setNumDoneAfterDue() {
         int count = 0;
         for (Task task : mainActivity.completedTasks) {
-            if (task.getDeadline() > currentDay && task.getCompleted()) {
+            if (task.getDeadline() < currentDay && task.getCompleted()) {
                 count++;
             }
         }
 
-        if(numDoneAfterDue != count) {
-            statisticsFrag.numDoneAfterDue += count;
+        if(numDoneAfterDue < count) {
+            statisticsFrag.numDoneAfterDue += count - numDoneAfterDue;
             numDoneAfterDue = count;
         }
+
+        SharedPreferences.Editor peditor = myPrefs.edit();
+        peditor.putInt("DONE_AFTER_DUE_KEY", statisticsFrag.numDoneAfterDue);
+        peditor.apply();
     }
 
     // Return the number of tasks past due
@@ -87,10 +96,17 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
             }
         }
 
-        if(numPastDue != count) {
-            statisticsFrag.numPastDue += count;
+        if(numPastDue < count) {
+            statisticsFrag.numPastDue += count - numPastDue;
+            numPastDue = count;
+        } else if (numPastDue > count) {
+            statisticsFrag.numPastDue -= numPastDue - count;
             numPastDue = count;
         }
+
+        SharedPreferences.Editor peditor = myPrefs.edit();
+        peditor.putInt("PAST_DUE_KEY", statisticsFrag.numPastDue);
+        peditor.apply();
     }
 
     // Return the number of tasks past due
@@ -103,30 +119,40 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
         }
 
         if(numToBeDone < count) {
-            statisticsFrag.numToBeDone += count;
+            statisticsFrag.numToBeDone += count - numToBeDone;
             numToBeDone = count;
         } else if (numToBeDone > count) {
-            statisticsFrag.numToBeDone -= count;
+            statisticsFrag.numToBeDone -= numToBeDone - count;
             numToBeDone = count;
         }
+
+        SharedPreferences.Editor peditor = myPrefs.edit();
+        peditor.putInt("TO_BE_DONE_KEY", statisticsFrag.numToBeDone);
+        peditor.apply();
     }
 
     // Return the number of tasks past due
     private void setTotalTasks() {
-        int count = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
-        if(totalTasks != count) {
-            statisticsFrag.totalTasks += mainActivity.myTasks.size()+mainActivity.completedTasks.size();
-            totalTasks = count;
+        int total = numDoneAfterDue + numDoneByDeadline + numPastDue + numToBeDone;
+
+        if(totalTasks < total) {
+            statisticsFrag.totalTasks += total - totalTasks;
+            totalTasks = total;
+        } else if (totalTasks > total) {
+            statisticsFrag.totalTasks -= totalTasks - total;
+            totalTasks = total;
         }
 
-
+        SharedPreferences.Editor peditor = myPrefs.edit();
+        peditor.putInt("TOTAL_TASKS_KEY", statisticsFrag.totalTasks);
+        peditor.apply();
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.stat_layout, parent, false);
-        myPrefs = PreferenceManager.getDefaultSharedPreferences(mainActivity);
+        //myPrefs = PreferenceManager.getDefaultSharedPreferences(mainActivity);
         return new ViewHolder(view);
     }
 
@@ -150,6 +176,7 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
             holder.mIdView.setText("" + statisticsFrag.totalTasks);
         }
         holder.mContentView.setText(mValues.get(position).content);
+
     }
 
     @Override

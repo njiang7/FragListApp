@@ -126,7 +126,7 @@ public class ListFrag extends Fragment {
                 return false;
             }
             case MENU_ITEM_DELETE: {
-                MainActivity.myTasks.remove(index);
+                myact.myTasks.remove(index);
                 Toast.makeText(cntx, "job " + index + " deleted",
                         Toast.LENGTH_SHORT).show();
                 // refresh view
@@ -154,6 +154,7 @@ public class ListFrag extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == resultCode) {
             myact.taskAdapter.notifyDataSetChanged();
+            myact.statisticsAdapter.notifyDataSetChanged();
         }
 
     }

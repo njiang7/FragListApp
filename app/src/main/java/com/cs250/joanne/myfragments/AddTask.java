@@ -104,6 +104,7 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
 
     public void onClickCancel(View view) {
         // return to main activity
+
         setResult(0); // 0 means cancel
         finish();
     }

@@ -74,6 +74,10 @@ public class StatisticsFrag extends Fragment {
         numToBeDone = myPrefs.getInt("TO_BE_DONE_KEY", 0);
         totalTasks = myPrefs.getInt("TOTAL_TASKS_KEY", 0);
 
+        /*SharedPreferences.Editor preferencesEditor = myPrefs.edit();
+        preferencesEditor.clear();
+        preferencesEditor.apply();*/
+
     }
 
     @Override
@@ -81,6 +85,12 @@ public class StatisticsFrag extends Fragment {
                              Bundle savedInstanceState) {
         mainActivity.getSupportActionBar().setTitle("Statistics");
         View view = inflater.inflate(R.layout.statistics_frag, container, false);
+
+        numDoneByDeadline = myPrefs.getInt("DONE_BY_DEADLINE_KEY", 0);
+        numDoneAfterDue = myPrefs.getInt("DONE_AFTER_DUE_KEY", 0);
+        numPastDue = myPrefs.getInt("PAST_DUE_KEY", 0);
+        numToBeDone = myPrefs.getInt("TO_BE_DONE_KEY", 0);
+        totalTasks = myPrefs.getInt("TOTAL_TASKS_KEY", 0);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -105,8 +115,20 @@ public class StatisticsFrag extends Fragment {
 
     }
 
+    // Called to save UI state changes at the
+    // end of the active lifecycle.
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.d ("Stat Frag", "onSaveInstanceState");
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate, onCreateView, and
+        // onCreateView if the parent Activity is killed and restarted.
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
     @Override
     public void onStart() {
+        Log.d ("Stat Frag", "onStart");
         super.onStart();
 
         numDoneByDeadline = myPrefs.getInt("DONE_BY_DEADLINE_KEY", 0);
@@ -118,11 +140,13 @@ public class StatisticsFrag extends Fragment {
 
     @Override
     public void onResume() {
+        Log.d ("Stat Frag", "onResume");
         super.onResume();
     }
 
     @Override
     public void onPause() {
+        Log.d ("Stat Frag", "onPause");
 
         SharedPreferences.Editor peditor = myPrefs.edit();
         peditor.putInt("DONE_BY_DEADLINE_KEY", numDoneByDeadline);
@@ -138,6 +162,7 @@ public class StatisticsFrag extends Fragment {
 
     @Override
     public void onStop() {
+        Log.d ("Stat Frag", "onStop");
         SharedPreferences.Editor peditor = myPrefs.edit();
         peditor.putInt("DONE_BY_DEADLINE_KEY", numDoneByDeadline);
         peditor.putInt("DONE_AFTER_DUE_KEY", numDoneAfterDue);
@@ -151,8 +176,16 @@ public class StatisticsFrag extends Fragment {
 
     @Override
     public void onDestroy() {
+        Log.d ("Stat Frag", "onDestroy");
         // do stuff here
         Log.d("onDestroy", "exit 3");
         super.onDestroy();
+    }
+
+    // Called when the Fragment has been detached from its parent Activity.
+    @Override
+    public void onDetach() {
+        Log.d ("Stat Frag", "onDetach");
+        super.onDetach();
     }
 }
