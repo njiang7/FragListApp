@@ -63,20 +63,10 @@ public class CompletedTasksFrag extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Task task = (Task) parent.getAdapter().getItem(position);
                 new AlertDialog.Builder(getContext())
-                        .setTitle("Task Info")
-                        .setMessage("Due: " + task.getDeadline())
-                        .setPositiveButton("Mark Incomplete", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Mark task as incomplete
-                                task.setCompleted(false);
-                                myact.myTasks.add(new Task(task));
-                                myact.completedTasks.remove(task);
-                                myact.completedTasksAdapter.notifyDataSetChanged();
-                            }
-                        })
-                        .setNegativeButton("Cancel", null)
-                        .setIcon(android.R.drawable.checkbox_on_background)
+                        .setTitle(task.getName())
+                        .setMessage("Due: " + task.formateDeadline() + "\nDone: " + task.formatDateCompleted())
+                        .setPositiveButton("OK", null)
+//                        .setIcon(android.R.drawable.checkbox_on_background)
                         .show();
             }
         });
@@ -130,8 +120,9 @@ public class CompletedTasksFrag extends Fragment {
             case MENU_ITEM_COPY: {
                 Toast.makeText(cntx, "copy task",
                         Toast.LENGTH_SHORT).show();
-                Task task = MainActivity.completedTasks.get(index);
-                MainActivity.completedTasks.add(new Task(task));
+                Task taskCopy = new Task(MainActivity.completedTasks.get(index));
+                taskCopy.setName(taskCopy.getName() + " (Copy)");
+                MainActivity.completedTasks.add(new Task(taskCopy));
                 myact.completedTasksAdapter.notifyDataSetChanged();
                 return true;
             }

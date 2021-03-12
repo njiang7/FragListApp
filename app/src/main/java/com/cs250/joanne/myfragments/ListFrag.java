@@ -20,10 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
+import java.util.Calendar;
 
 
 public class ListFrag extends Fragment {
@@ -63,20 +60,26 @@ public class ListFrag extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 final Task task = (Task) parent.getAdapter().getItem(position);
                 new AlertDialog.Builder(getContext())
-                        .setTitle("Task Info")
-                        .setMessage("Due: " + task.getDeadline())
+                        .setTitle(task.getName())
+                        .setMessage("Due: " + task.formateDeadline())
                         .setPositiveButton("Mark Completed", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 // Mark task as completed
+                                Calendar cal = Calendar.getInstance();
+                                int year = cal.get(Calendar.YEAR);
+                                int month = cal.get(Calendar.MONTH) + 1;
+                                int day = cal.get(Calendar.DAY_OF_MONTH);
+                                int date = year*10000 + month*100 + day; // get current date
                                 task.setCompleted(true);
+                                task.setDateCompleted(date);
                                 myact.completedTasks.add(new Task(task));
                                 myact.myTasks.remove(task);
                                 myact.taskAdapter.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("Cancel", null)
-                        .setIcon(android.R.drawable.checkbox_on_background)
+//                        .setIcon(android.R.drawable.checkbox_on_background)
                         .show();
             }
         });
@@ -133,8 +136,9 @@ public class ListFrag extends Fragment {
             case MENU_ITEM_COPY: {
                 Toast.makeText(cntx, "copy task",
                         Toast.LENGTH_SHORT).show();
-                Task task = MainActivity.myTasks.get(index);
-                MainActivity.myTasks.add(new Task(task));
+                Task taskCopy = new Task(MainActivity.myTasks.get(index));
+                taskCopy.setName(taskCopy.getName() + " (Copy)");
+                MainActivity.myTasks.add(taskCopy);
                 myact.taskAdapter.notifyDataSetChanged();
                 return true;
             }

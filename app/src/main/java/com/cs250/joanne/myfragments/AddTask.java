@@ -66,7 +66,7 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
                 // populate fields if editing a task instead of creating a new task
                 EditText editTextName = (EditText) findViewById(R.id.editTextName);
                 editTextName.setText(task.getName());
-                selectDate.setText((mMonth+1) + "-" + mDay + "-" + mYear);
+                selectDate.setText((mMonth+1) + "/" + mDay + "/" + mYear);
                 EditText editTextCategory = (EditText) findViewById(R.id.editTextCategory);
                 editTextCategory.setText(task.getCategory());
             }
@@ -91,7 +91,7 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth) {
 
-                            selectDate.setText((monthOfYear + 1) + "-" + dayOfMonth + "-" + year);
+                            selectDate.setText((monthOfYear + 1) + "/" + dayOfMonth + "/" + year);
                             mYear = year;
                             mMonth = monthOfYear;
                             mDay = dayOfMonth;
@@ -120,8 +120,7 @@ public class AddTask extends AppCompatActivity implements View.OnClickListener {
             errorFlag = 1;
         }
         if (TextUtils.isEmpty(editTextCategory.getText().toString())) {
-            editTextCategory.setError("Task category cannot be empty.");
-            errorFlag = 1;
+            editTextCategory.setText("misc"); // use misc as category if not specified
         }
         if (TextUtils.isEmpty(selectDate.getText().toString())) {
             selectDate.setError("Deadline cannot be empty.");

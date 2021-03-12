@@ -7,6 +7,7 @@ import androidx.annotation.RequiresApi;
 public class Task implements Comparable<Task> {
     private String name;
     private Integer deadline;
+    private Integer dateCompleted;
     private String category;
     private Boolean completed;
 
@@ -15,6 +16,7 @@ public class Task implements Comparable<Task> {
         this.deadline = deadline;
         this.category = category;
         this.completed = false;
+        this.dateCompleted = 0;
     }
 
     // copy constructor
@@ -23,6 +25,7 @@ public class Task implements Comparable<Task> {
         this.deadline = task.deadline;
         this.category = task.category;
         this.completed = task.completed;
+        this.dateCompleted = task.dateCompleted;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -31,6 +34,21 @@ public class Task implements Comparable<Task> {
         return Integer.compare(this.deadline, task.deadline);
     }
 
+    public String formateDeadline() {
+        String date = deadline.toString();
+        int year = Integer.parseInt(date.substring(0,4));
+        int month = Integer.parseInt(date.substring(4,6));
+        int day = Integer.parseInt(date.substring(6,8));
+        return month + "/" + day + "/" + year;
+    }
+
+    public String formatDateCompleted() {
+        String date = dateCompleted.toString();
+        int year = Integer.parseInt(date.substring(0,4));
+        int month = Integer.parseInt(date.substring(4,6));
+        int day = Integer.parseInt(date.substring(6,8));
+        return month + "/" + day + "/" + year;
+    }
     public String getName() {
         return name;
     }
@@ -61,5 +79,13 @@ public class Task implements Comparable<Task> {
 
     public void setCompleted(Boolean completed) {
         this.completed = completed;
+    }
+
+    public Integer getDateCompleted() {
+        return dateCompleted;
+    }
+
+    public void setDateCompleted(Integer dateCompleted) {
+        this.dateCompleted = dateCompleted;
     }
 }
