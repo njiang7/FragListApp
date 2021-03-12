@@ -2,6 +2,9 @@ package com.cs250.joanne.myfragments;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,78 +24,122 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
     private final List<StatItem> mValues;
     private MainActivity mainActivity;
     private Integer currentDay;
+    private SharedPreferences myPrefs;
+    private StatisticsFrag statisticsFrag;
+    private Integer numTotalTasks;
+    //private Integer numDoneByDeadline;
+    //private Integer numDoneAfterDue;
+    //private Integer numPastDue;
+    //private Integer numToBeDone;
+    //private Integer totalTasks;
 
 
-    public StatisticsRecyclerViewAdapter(List<StatItem> items, MainActivity mainActivity) {
+    public StatisticsRecyclerViewAdapter(List<StatItem> items, Integer numTotalTasks, StatisticsFrag statisticsFrag, MainActivity mainActivity) {
         mValues = items;
 
         Calendar calendar = Calendar.getInstance();
         int mYear = calendar.get(Calendar.YEAR);
         int mMonth = calendar.get(Calendar.MONTH);
         int mDay = calendar.get(Calendar.DAY_OF_MONTH);
-        currentDay = mYear*10000 + (mMonth+1)*100 + mDay; // format date into an integer
+        currentDay = mYear * 10000 + (mMonth + 1) * 100 + mDay; // format date into an integer
         final Calendar c = Calendar.getInstance();
 
+        statisticsFrag = this.statisticsFrag;
+
         this.mainActivity = mainActivity;
+        numTotalTasks = this.numTotalTasks;
     }
 
     // Return the number of tasks completed by the deadline.
-    private int getNumDoneByDeadline() {
+    private void setNumDoneByDeadline() {
         int count = 0;
-        for(Task task: mainActivity.completedTasks) {
-            if(task.getDeadline() <= currentDay && task.getCompleted()) {
+        for (Task task : mainActivity.completedTasks) {
+            if (task.getDeadline() <= currentDay && task.getCompleted()) {
                 count++;
             }
         }
 
-        return count;
+        //if(mainActivity.completedTasks.size() + mainActivity.myTasks.size() != numTotalTasks) {
+        statisticsFrag.numDoneByDeadline += count;
+        //numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+        //}
+
+        //statisticsFrag.numDoneByDeadline += count;
     }
 
     // Return the number of tasks completed after the deadline
-    private int getNumDoneAfterDue() {
+    private void setNumDoneAfterDue() {
         int count = 0;
-        for(Task task: mainActivity.completedTasks) {
-            if(task.getDeadline() > currentDay && task.getCompleted()) {
+        for (Task task : mainActivity.completedTasks) {
+            if (task.getDeadline() > currentDay && task.getCompleted()) {
+                count++;
+                //numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+            }
+        }
+
+        //if(mainActivity.completedTasks.size() + mainActivity.myTasks.size() != numTotalTasks) {
+        statisticsFrag.numDoneAfterDue += count;
+        //numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+        //}
+
+        //statisticsFrag.numDoneAfterDue += count;
+    }
+
+    // Return the number of tasks past due
+    private void setNumPastDue() {
+        int count = 0;
+        for (Task task : mainActivity.myTasks) {
+            if (task.getDeadline() < currentDay && !task.getCompleted()) {
                 count++;
             }
         }
 
-        return count;
+        //if(mainActivity.completedTasks.size() + mainActivity.myTasks.size() != numTotalTasks) {
+        statisticsFrag.numPastDue += count;
+        //numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+        //}
+
+        //statisticsFrag.numPastDue += count;
     }
 
     // Return the number of tasks past due
-    private int getNumPastDue() {
+    private void setNumToBeDone() {
         int count = 0;
-        for(Task task: mainActivity.myTasks) {
-            if(task.getDeadline() < currentDay && !task.getCompleted()) {
+        for (Task task : mainActivity.myTasks) {
+            if (task.getDeadline() >= currentDay && !task.getCompleted()) {
                 count++;
             }
         }
 
-        return count;
+        //if(mainActivity.completedTasks.size() + mainActivity.myTasks.size() != numTotalTasks) {
+        statisticsFrag.numToBeDone += count;
+        //numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+        //}
+
+        //statisticsFrag.numToBeDone += count;
     }
 
     // Return the number of tasks past due
-    private int getNumToBeDone() {
-        int count = 0;
-        for(Task task: mainActivity.myTasks) {
-            if(task.getDeadline() >= currentDay && !task.getCompleted()) {
-                count++;
-            }
-        }
+    private void setTotalTasks() {
+        //if (myPrefs.getInt("TOTAL_TASKS_KEY", 0) != statisticsFrag.totalTasks) {
 
-        return count;
-    }
+    //if(mainActivity.completedTasks.size() + mainActivity.myTasks.size() != numTotalTasks) {
+            statisticsFrag.totalTasks += mainActivity.myTasks.size()+mainActivity.completedTasks.size();
+            ///SharedPreferences.Editor peditor = myPrefs.edit();
+            //peditor.putInt("TOTAL_TASKS_KEY", statisticsFrag.totalTasks);
+            //peditor.apply();
+    //numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+    //}
+    //statisticsFrag.totalTasks += mainActivity.myTasks.size() + mainActivity.completedTasks.size();
 
-    // Return the number of tasks past due
-    private int getTotalTasks() {
-        return mainActivity.myTasks.size() + mainActivity.completedTasks.size();
+       // }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.stat_layout, parent, false);
+        myPrefs = PreferenceManager.getDefaultSharedPreferences(mainActivity);
         return new ViewHolder(view);
     }
 
@@ -100,18 +147,38 @@ public class StatisticsRecyclerViewAdapter extends RecyclerView.Adapter<Statisti
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         if(mValues.get(position).content.equals("done by deadline")) {
-            holder.mIdView.setText("" + getNumDoneByDeadline());
+            //if(mainActivity.completedTasks.size() + mainActivity.myTasks.size() != numTotalTasks) {
+                setNumDoneByDeadline();
+               // numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+           // }
+            holder.mIdView.setText("" + statisticsFrag.numDoneByDeadline);
         } else if (mValues.get(position).content.equals("done after due")) {
-            holder.mIdView.setText("" + getNumDoneAfterDue());
+            //if(mainActivity.completedTasks.size() + mainActivity.myTasks.size() != numTotalTasks) {
+                setNumDoneAfterDue();
+                //numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+           // }
+            holder.mIdView.setText("" + statisticsFrag.numDoneAfterDue);
         } else if (mValues.get(position).content.equals("past due")) {
-            holder.mIdView.setText("" + getNumPastDue());
+            //if(mainActivity.completedTasks.size() + mainActivity.myTasks.size() != numTotalTasks) {
+                setNumPastDue();
+               // numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+           // }
+            holder.mIdView.setText("" + statisticsFrag.numPastDue);
         } else if (mValues.get(position).content.equals("to be done")) {
-            holder.mIdView.setText("" + getNumToBeDone());
+           // if(mainActivity.completedTasks.size() + mainActivity.myTasks.size() != numTotalTasks) {
+                setNumToBeDone();
+               // numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+            //}
+            holder.mIdView.setText("" + statisticsFrag.numToBeDone);
         } else if (mValues.get(position).content.equals("Total Tasks")) {
-            holder.mIdView.setText("" + getTotalTasks());
-        } else {
+            //if(mainActivity.completedTasks.size() + mainActivity.myTasks.size() != numTotalTasks) {
+                //setTotalTasks();
+              //  numTotalTasks = mainActivity.completedTasks.size() + mainActivity.myTasks.size();
+           // }
+            holder.mIdView.setText("" + statisticsFrag.totalTasks);
+        } /*else {
             holder.mIdView.setText("0");
-        }
+        }*/
         holder.mContentView.setText(mValues.get(position).content);
     }
 

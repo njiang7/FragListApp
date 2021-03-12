@@ -1,6 +1,8 @@
 package com.cs250.joanne.myfragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -14,8 +16,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +43,21 @@ public class MainActivity extends AppCompatActivity
     protected TaskAdapter completedTasksAdapter;
     public static ArrayList<Task> myTasks;
     public static ArrayList<Task> completedTasks;
+    private SharedPreferences myPrefs;
+    private Integer numDoneByDeadline;
+    private Integer numDoneAfterDue;
+    private Integer numPastDue;
+    private Integer numToBeDone;
+    private Integer totalTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Context context = getApplicationContext(); // app level storage
+        myPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -54,8 +70,6 @@ public class MainActivity extends AppCompatActivity
         taskAdapter = new TaskAdapter(this, R.layout.item_task, myTasks); // create taskAdapter
         completedTasksAdapter = new TaskAdapter(this, R.layout.item_task, completedTasks);
 
-        statisticsAdapter = new StatisticsRecyclerViewAdapter(statItems, this);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -66,6 +80,8 @@ public class MainActivity extends AppCompatActivity
         list = new ListFrag();
         statistics = new StatisticsFrag();
         completedTasksFrag = new CompletedTasksFrag();
+
+        statisticsAdapter = new StatisticsRecyclerViewAdapter(statItems, 0, (StatisticsFrag) statistics,this);
 
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, item).commit();
@@ -119,6 +135,57 @@ public class MainActivity extends AppCompatActivity
             statisticsAdapter.notifyDataSetChanged();
         }
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        numDoneByDeadline = myPrefs.getInt("DONE_BY_DEADLINE_KEY", 0);
+        numDoneAfterDue = myPrefs.getInt("DONE_AFTER_DUE_KEY", 0);
+        numPastDue = myPrefs.getInt("PAST_DUE_KEY", 0);
+        numToBeDone = myPrefs.getInt("TO_BE_DONE_KEY", 0);
+        totalTasks = myPrefs.getInt("TOTAL_TASKS_KEY", 0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+
+        SharedPreferences.Editor peditor = myPrefs.edit();
+        peditor.putInt("DONE_BY_DEADLINE_KEY", numDoneByDeadline);
+        peditor.putInt("DONE_AFTER_DUE_KEY", numDoneAfterDue);
+        peditor.putInt("PAST_DUE_KEY", numPastDue);
+        peditor.putInt("TO_BE_DONE_KEY", numToBeDone);
+        peditor.putInt("TOTAL_TASKS_KEY", totalTasks);
+        peditor.apply();
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+
+        SharedPreferences.Editor peditor = myPrefs.edit();
+        peditor.putInt("DONE_BY_DEADLINE_KEY", numDoneByDeadline);
+        peditor.putInt("DONE_AFTER_DUE_KEY", numDoneAfterDue);
+        peditor.putInt("PAST_DUE_KEY", numPastDue);
+        peditor.putInt("TO_BE_DONE_KEY", numToBeDone);
+        peditor.putInt("TOTAL_TASKS_KEY", totalTasks);
+        peditor.apply();
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // do stuff here
+        Log.d("onDestroy", "exit 3");
+        super.onDestroy();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
